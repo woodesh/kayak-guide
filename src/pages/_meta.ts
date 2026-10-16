@@ -1,12 +1,11 @@
 export default {
   index: {
-    title: "Getting Started",
+    title: "首页",
     display: "hidden",
     theme: {
       breadcrumb: false,
       footer: true,
       sidebar: true,
-      // The home page is cards; its TOC only took width from them
       toc: false,
       pagination: false,
     },
@@ -37,100 +36,48 @@ export default {
       timestamp: false,
     },
   },
-  header_status: {
-    title: "Status Page",
-    type: "page",
-    href: "https://status.inkonchain.com/",
-    newWindow: true,
-  },
-  header_faucet: {
-    title: "Faucets",
-    type: "page",
-    href: "/tools/faucets",
-  },
-  "--- GENERAL": {
-    title: "General",
+  "--- START": {
+    title: "快速上手",
     type: "separator",
   },
-  general: {
-    title: "General",
+  start: {
+    title: "快速上手",
     display: "children",
   },
-  "+++ Build on Ink": {
+  "+++ Workflows": {
     title: "",
     type: "separator",
   },
-  "--- Build On Ink": {
-    title: "Build On Ink",
+  "--- WORKFLOWS": {
+    title: "办案全流程",
     type: "separator",
   },
-  build: {
-    title: "Build on Ink",
+  workflows: {
+    title: "办案全流程",
     display: "children",
   },
-  "+++ Ink Builder Program": {
+  "+++ Recipes": {
     title: "",
     type: "separator",
   },
-  "--- Ink Builder Program": {
-    title: "Ink Builder Program",
+  "--- RECIPES": {
+    title: "实战案例库",
     type: "separator",
   },
-  "ink-builder-program": {
-    title: "Ink Builder Program",
+  recipes: {
+    title: "实战案例库",
     display: "children",
   },
-  "+++ Tools": {
+  "+++ Manual": {
     title: "",
     type: "separator",
   },
-  "--- Tools": {
-    title: "Tools",
+  "--- MANUAL": {
+    title: "参考手册",
     type: "separator",
   },
-  tools: {
-    title: "Tools",
+  manual: {
+    title: "参考手册",
     display: "children",
-  },
-  "+++ Useful Information": {
-    title: "",
-    type: "separator",
-  },
-  "--- Useful Information": {
-    title: "Useful Information",
-    type: "separator",
-  },
-  "useful-information": {
-    title: "Useful Information",
-    display: "children",
-  },
-  "+++ Work with Ink": {
-    title: "",
-    type: "separator",
-  },
-  "--- Work with Ink": {
-    title: "Work with Ink",
-    type: "separator",
-  },
-  "work-with-ink": {
-    title: "Work with Ink",
-    display: "children",
-    theme: {
-      pagination: true,
-    },
-  },
-  "---": {
-    type: "separator",
-  },
-  faq: {
-    title: "FAQ",
-  },
-  status: {
-    title: "Status Page",
-    href: "https://status.inkonchain.com/",
-    newWindow: true,
-    theme: {
-      pagination: false,
-    },
   },
 };

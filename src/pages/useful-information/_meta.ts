@@ -1,9 +1,0 @@
-export default {
-  contracts: "Contracts",
-  "ink-contracts": "Ink Contracts",
-  "ink-token-contracts": {
-    title: "Ink Token Contracts",
-    display: "hidden",
-  },
-  "the-superchain": "The Superchain",
-};

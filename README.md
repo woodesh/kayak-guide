@@ -1,66 +1,47 @@
-[![Twitter](https://img.shields.io/twitter/follow/inkonchain)](https://x.com/inkonchain)
+# KayakGuide
 
-# InkChain Documentation App
+Kayak 法律工作指南，使用 Next.js 与 Nextra 构建。内容包括客户端操作、账号与插件配置、执行研究、企业资料查询、计算核对和文书交付；律师、法务及法院办案人员应按实际角色和获准环境使用。
 
-An advanced, streamlined documentation platform built with Next.js and Nextra for InkChain.
+本仓库用于构建和发布指南网站。安装章节中的客户端下载地址是外部链接，网站项目不打包客户端安装程序。
 
-## 🚀 Build & Run
+## 本地运行
 
-1. **Build Docker image**:
-   ```bash
-   docker build -t docs .
-   ```
+安装项目依赖后运行：
 
-2. **Run Docker container**:
-   ```bash
-   docker run -p 3000:3000 docs
-   ```
+```sh
+pnpm install
+pnpm dev
+```
 
-## 📋 Requirements
+默认打开 http://localhost:3000。发布构建使用 `pnpm build`，生产预览使用 `pnpm start`。构建或部署不会自动开通 Kayak 账号、企业模式、执行事务服务或企查查权益。
 
-* **Node.js**: v20.11.0 or higher
+## 内容位置
 
-## 📖 Overview
+- `src/pages/start`：安装、登录、插件、桌面操作和安全边界。
+- `src/pages/workflows`：材料、研究、计算、电脑操作及文件交付。
+- `src/pages/recipes`：明确标为模拟的完整任务示例。
+- `src/pages/manual`：指令、工具、规范原文及故障处理。
+- 各目录 `_meta.ts`：侧栏顺序与名称；新增页面时同步维护。
+- `src/components/Home/HomeSections.tsx`：首页导航文案；产品能力变化时与正文同步修订。
 
-This is a documentation application powered by [Nextra](https://nextra.site/) and built on [Next.js](https://nextjs.org/). Nextra simplifies the creation of documentation sites, allowing us to leverage the **Pages Router** for efficient navigation and routing. Currently, due to compatibility limitations, we have not yet upgraded to the App Router.
+## 核对与维护
 
-## 🏁 Getting Started
+产品说明以相邻 Kayak 桌面代码、new-api 服务端和 legal-agent 正式客户端插件为核对依据。技能中的输出要求不能直接当作每次运行的成功证明，旧教程和模拟 Word 也不是事实依据。部署开放的账号、模型、服务和价格仍以实际配置为准。
 
-To get started with local development:
+法律条文引用应直接链接官方原文并核对版本，不用代码中的规则提示代替法源。模拟案例不应描述为已实际受理、胜诉、冻结或到账。
 
-1. **Clone the repository**
-2. **Install dependencies**:
-   ```bash
-   pnpm install
-   ```
-3. **Start development server**:
-   ```bash
-   pnpm run dev
-   ```
+本轮核验范围和重要限制见 [内容核验记录](docs/content-review-2026-10-16.md)。
 
-## 🛠 Tooling
+## 验证
 
-Our development setup includes multiple tools to maintain high-quality code and documentation:
+`pnpm build` 检查 MDX 和应用构建。对改动文件运行项目的 Remark、Prettier 与 ESLint；新增或调整导航后，检查内部链接和目录 `_meta.ts`。打开本地预览核对桌面与手机上的目录、正文和表格。
 
-* **[CSpell](https://cspell.org/)**: Real-time spell checking to maintain documentation accuracy.
-* **[Remark](https://remark.js.org/)**: Processes and renders Markdown content with added plugins.
-* **[ESLint](https://eslint.org/)**: Ensures code quality by catching potential issues.
-* **[Prettier](https://prettier.io/)**: Enforces consistent code formatting.
-* **[Tailwind CSS](https://tailwindcss.com/)**: Utility-first CSS framework for fast, responsive UI development.
+部署方式、生产域名及公开仓库由维护者另行配置，本项目文档不预设自动发布或公开源码。
 
-## 🚦 CI/CD Pipeline
+## 部署地址与 sitemap 配置
 
-Our CI/CD setup utilizes GitHub Actions to run automated checks on every pull request (PR):
+正式域名确认后，在 Vercel 的构建环境中显式设置 `NEXT_PUBLIC_SITE_URL`，值为本站的完整 HTTP/HTTPS 源地址，不含路径、账号密码、查询参数或片段；不使用 localhost、回环地址或 `.local` 域名作为生产地址。本地需要核对时可复制 `.env.example` 为 `.env.local` 后填写。该变量公开进入网页，不得填入密钥；修改后需要重新构建。
 
-* **js-lint**: Ensures proper JavaScript code formatting with ESLint.
-* **md-lint**: Checks Markdown code formatting with Remark.
-* **format**: Enforces consistent code style with Prettier.
-* **spell-check**: Uses CSpell to verify correct spelling in the documentation. For any unique terms (e.g., "InkChain"), add them to the [`./cspell/project-words.txt`](./cspell/project-words.txt) file to whitelist.
+`postbuild` 使用当前安装的 `next-sitemap` 生成 sitemap 与 robots.txt，网页的 JSON-LD 使用同一站点地址。变量未配置或留空时，构建仍可完成，但会跳过生成并删除旧的 sitemap/robots 文件，JSON-LD 也不包含站点 URL；配置格式不合法时，生成步骤会报错并清理旧文件。预览环境域名未确定时保持留空，不会从 Vercel 项目名猜测地址。
 
-## 🌐 Feature Branch Deployment
-
-For every new PR, our CI/CD pipeline deploys a temporary environment via **AWS Amplify**. This real-time deployment enables live testing and review of changes before merging, ensuring a smoother workflow. The deployment URL is automatically provided within the PR checks, allowing team members to interact with new features.
-
-## 🚀 Production Deployment
-
-The `main` branch is configured for automatic continuous deployment via **AWS Amplify**. Every merge triggers a new build and deployment, ensuring that the latest version of the documentation is available to users without manual intervention.
+部署前先运行 `pnpm build` 并检查产物；确认域名后再设置相应环境变量并重新构建。这里的配置只准备部署产物，不执行 Vercel 发布、域名绑定或 DNS 修改。

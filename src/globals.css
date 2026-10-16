@@ -48,6 +48,232 @@
   }
 }
 
+/* =================================================================== */
+/* Clean Blockquote Styling (非斜体，柔和沉稳次级文字颜色)                 */
+/* =================================================================== */
+
+blockquote,
+blockquote *,
+article blockquote,
+article blockquote * {
+  font-style: normal !important;
+}
+
+blockquote,
+article blockquote {
+  border-left-color: rgb(var(--outline-subtle)) !important;
+  color: rgb(var(--secondary)) !important;
+}
+
+blockquote p,
+article blockquote p {
+  color: inherit !important;
+}
+
+/* =================================================================== */
+/* Mermaid Diagrams Polish: 间距优化 & 彻底去除黄色背景                   */
+/* =================================================================== */
+/* Mermaid Diagrams Polish: 优雅轻量卡片、柔和背景与抗截断排版             */
+/* =================================================================== */
+
+/* 图表容器上下增加充足的呼吸间距 */
+.nextra-content main div:has(> svg.flowchart),
+.nextra-content main div:has(> svg[role*="graphics-document"]),
+.nextra-content main div:has(> svg[id^="mermaid"]),
+.nextra-content main div:has(> svg[id^="R"]),
+.nextra-content main div:has(> svg[id^="m-"]),
+.nextra-content main div:has(> svg),
+.nextra-content main svg.flowchart,
+.nextra-content main svg[role*="graphics-document"],
+.nextra-content main svg[id^="mermaid"],
+.nextra-content main svg[id^="R"],
+.nextra-content main svg[id^="m-"] {
+  margin-top: 2.25rem !important;
+  margin-bottom: 2.75rem !important;
+}
+
+/* 优雅轻盈的子图/群组（cluster）背景与边框：纯净透明底色，细致边框，零阴影 */
+.nextra-content main svg *,
+svg.flowchart *,
+svg[role*="graphics-document"] * {
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+.cluster rect,
+.cluster polygon,
+.cluster path,
+g.cluster > rect,
+svg.flowchart .cluster rect,
+svg[role*="graphics-document"] .cluster rect,
+svg[id^="m-"] .cluster rect,
+svg .cluster rect {
+  fill: transparent !important;
+  stroke: #e2e8f0 !important;
+  stroke-width: 1px !important;
+  rx: 12px !important;
+  ry: 12px !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+.dark .cluster rect,
+.dark .cluster polygon,
+.dark .cluster path,
+.dark g.cluster > rect,
+.dark svg.flowchart .cluster rect,
+.dark svg[role*="graphics-document"] .cluster rect,
+.dark svg[id^="m-"] .cluster rect,
+.dark svg .cluster rect {
+  fill: transparent !important;
+  stroke: rgba(255, 255, 255, 0.12) !important;
+  stroke-width: 1px !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+/* 子图标头文本颜色与排版 */
+.cluster text,
+.cluster span,
+svg.flowchart .cluster text,
+svg.flowchart .cluster span,
+svg[id^="m-"] .cluster text,
+svg[id^="m-"] .cluster span {
+  fill: rgb(var(--primary)) !important;
+  color: rgb(var(--primary)) !important;
+  font-weight: 600 !important;
+  font-size: 13.5px !important;
+}
+
+/* 节点卡片圆角、纯净白底与轻量细边框，彻底杜绝任何阴影 */
+svg.flowchart .node rect,
+svg.flowchart .node polygon,
+svg[role*="graphics-document"] .node rect,
+svg[id^="m-"] .node rect,
+svg .node rect {
+  fill: #ffffff !important;
+  stroke: #e2e8f0 !important;
+  stroke-width: 1px !important;
+  rx: 8px !important;
+  ry: 8px !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+.dark svg.flowchart .node rect,
+.dark svg[role*="graphics-document"] .node rect,
+.dark svg[id^="m-"] .node rect,
+.dark svg .node rect {
+  fill: #0e121b !important;
+  stroke: #334155 !important;
+  stroke-width: 1px !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+.dark .cluster text,
+.dark .cluster span,
+.dark svg.flowchart .cluster text,
+.dark svg.flowchart .cluster span,
+.dark svg[id^="m-"] .cluster text,
+.dark svg[id^="m-"] .cluster span {
+  fill: #f8fafc !important;
+  color: #f8fafc !important;
+}
+
+/* 保护 Mermaid SVG 内部文本排版，彻底防止被 Nextra 全局段落样式破坏导致截断 */
+.nextra-content main svg foreignObject,
+svg.flowchart foreignObject,
+svg[role*="graphics-document"] foreignObject,
+svg[id^="mermaid"] foreignObject,
+svg[id^="R"] foreignObject,
+svg[id^="m-"] foreignObject,
+svg foreignObject {
+  overflow: visible !important;
+}
+
+.nextra-content main svg foreignObject p,
+.nextra-content main svg .nodeLabel p,
+.nextra-content main svg .label p,
+svg.flowchart foreignObject p,
+svg[role*="graphics-document"] foreignObject p,
+svg[id^="mermaid"] foreignObject p,
+svg[id^="R"] foreignObject p,
+svg[id^="m-"] foreignObject p,
+svg foreignObject p {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.45 !important;
+  font-size: 13px !important;
+  color: rgb(var(--primary)) !important;
+}
+
+.dark .nextra-content main svg foreignObject,
+.dark .nextra-content main svg foreignObject p,
+.dark .nextra-content main svg .nodeLabel,
+.dark .nextra-content main svg .nodeLabel p,
+.dark .nextra-content main svg .label,
+.dark .nextra-content main svg .label p,
+.dark svg.flowchart foreignObject p,
+.dark svg[id^="m-"] foreignObject p {
+  color: #f8fafc !important;
+  fill: #f8fafc !important;
+}
+
+.nextra-content main svg foreignObject div,
+.nextra-content main svg .nodeLabel,
+.nextra-content main svg .label {
+  line-height: 1.45 !important;
+}
+
+/* =================================================================== */
+/* Modern Minimalist Scrollbar (方案一：全局极简微滚动条)                 */
+/* =================================================================== */
+
+/* Standards: Firefox & modern browsers */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.dark * {
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+/* WebKit & Chromium: Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.18);
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  transition: background-color 0.2s ease;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.38);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
 @layer utilities {
   body {
     font-family:
@@ -127,7 +353,8 @@
   @apply !bg-transparent;
 }
 
-html[data-scrolled] .nextra-nav-container {
+body[data-scrolled] .nextra-nav-container,
+[data-scrolled] .nextra-nav-container {
   @apply !bg-background/80 backdrop-blur-md;
 }
 
@@ -455,24 +682,14 @@ html:has(.nextra-nav-container input[type="search"]:focus)
   @apply !font-semibold !tracking-[-0.02em];
 }
 
-/* Title row: h1 + page actions (components/PageTitle), ruled underneath */
+/* Page title, ruled underneath */
 .nextra-content main .ink-page-title {
   @apply flex flex-col-reverse items-start gap-4 border-b border-outline-subtle pb-5 sm:flex-row sm:justify-between;
 }
 
-/* Long titles wrap; the actions stay beside the first line */
+/* Long titles wrap within the content column */
 .nextra-content main .ink-page-title > h1 {
   @apply min-w-0 flex-1;
-}
-
-/* "Copy page" once per page: only on the first title, even if a page has a
-   stray second h1 */
-.nextra-content main .ink-page-title ~ .ink-page-title > .ink-page-actions {
-  @apply !hidden;
-}
-
-.nextra-content main .ink-page-title > .ink-page-actions {
-  @apply sm:mt-1;
 }
 
 .nextra-content main h1 {
@@ -549,7 +766,7 @@ html:has(.nextra-nav-container input[type="search"]:focus)
   main
   div:has(> a[title] > svg)
   > a:not([class*="_ml-auto"])::before {
-  content: "Previous";
+  content: "上一篇";
   @apply left-11;
 }
 
@@ -567,7 +784,7 @@ html:has(.nextra-nav-container input[type="search"]:focus)
 }
 
 .nextra-content main div:has(> a[title] > svg) > a[class*="_ml-auto"]::before {
-  content: "Next";
+  content: "下一篇";
   @apply right-11;
 }
 
@@ -724,7 +941,8 @@ html:has(.nextra-nav-container input[type="search"]:focus)
     @apply transition-opacity duration-300;
   }
 
-  html:not([data-scrolled]) .ink-toc {
+  body:not([data-scrolled]) .ink-toc,
+  :not([data-scrolled]) .ink-toc {
     @apply pointer-events-none opacity-0;
   }
 }
@@ -773,11 +991,6 @@ html:has(.nextra-nav-container input[type="search"]:focus)
 /* A lone prev or next card spans the full width */
 .nextra-content main div:has(> a[title] > svg) > a:only-child {
   grid-column: 1 / -1;
-}
-
-/* Home: the hero sits right under the title, so no rule there */
-.nextra-content main .ink-page-title:has(+ div interactive-ink) {
-  @apply !border-b-0 !pb-0;
 }
 
 /* Edit link right under "Last updated" (pages without pagination) */
@@ -844,9 +1057,15 @@ html:has(.nextra-nav-container input[type="search"]:focus)
 
 /* Content images — one fixed radius (not tied to the tuner) and a hairline
    so white screenshots don't bleed into the page */
-.nextra-content main img {
+.nextra-content main img:not(.ink-hero-img) {
   @apply border border-outline-subtle;
   border-radius: 1rem;
+}
+
+.ink-hero-img {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
 }
 
 /*
@@ -975,7 +1194,6 @@ html:has(.nextra-nav-container input[type="search"]:focus) .ink-search-bar {
 }
 
 .nextra-sidebar-container a[target="_blank"]::after,
-.nextra-sidebar-container a[href="/status"]::after,
 .nextra-nav-container nav a[aria-current][target="_blank"]::after {
   content: "";
   @apply inline-block size-3.5 shrink-0 bg-current opacity-60;
@@ -983,13 +1201,9 @@ html:has(.nextra-nav-container input[type="search"]:focus) .ink-search-bar {
 }
 
 /* Sidebar: right-aligned like the folder chevrons (as on aave.com/docs) */
-.nextra-sidebar-container a[target="_blank"]::after,
-.nextra-sidebar-container a[href="/status"]::after {
+.nextra-sidebar-container a[target="_blank"]::after {
   @apply ml-auto self-center;
 }
-
-/* (/status is a local page that opens status.inkonchain.com in a new tab,
-   so it's external for the reader even though Nextra renders it as local) */
 
 /* Navbar: right after the label */
 .nextra-nav-container nav a[aria-current][target="_blank"] {

@@ -1,5 +1,4 @@
 const simpleImportSort = require("eslint-plugin-simple-import-sort");
-const path = require("node:path");
 const js = require("@eslint/js");
 const { FlatCompat } = require("@eslint/eslintrc");
 

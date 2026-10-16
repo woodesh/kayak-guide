@@ -6,9 +6,15 @@ import { useEffect } from "react";
  */
 export const ScrollState = () => {
   useEffect(() => {
-    const root = document.documentElement;
+    const body = document.body;
+    let isScrolled = false;
+
     const update = () => {
-      root.toggleAttribute("data-scrolled", window.scrollY > 0);
+      const nextScrolled = window.scrollY > 0;
+      if (isScrolled !== nextScrolled) {
+        isScrolled = nextScrolled;
+        body.toggleAttribute("data-scrolled", nextScrolled);
+      }
     };
 
     update();

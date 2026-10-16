@@ -1,6 +1,0 @@
-export default {
-  "deploying-a-smart-contract": "Deploying a Smart Contract",
-  "verify-smart-contract": "Verifying a Smart Contract",
-  "shipping-on-the-superchain": "Shipping on the Superchain",
-  "deploying-a-superchainerc20": "Deploying a SuperchainERC20",
-};

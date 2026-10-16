@@ -40,7 +40,7 @@ export const SearchBar = () => {
           <path d="m20 20-3.5-3.5" />
         </svg>
         <span className="min-w-0 flex-1 truncate text-sm font-medium text-secondary">
-          Search the docs…
+          搜索全站文档与办案指引…
         </span>
         <kbd className="shrink-0 rounded-md border border-outline-subtle bg-background px-1.5 py-0.5 font-sans text-[11px] font-semibold text-secondary">
           {isMac ? "⌘K" : "Ctrl K"}

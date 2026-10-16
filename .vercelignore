@@ -1,0 +1,9 @@
+.git
+.github
+.agents
+.next
+node_modules
+out
+docs
+*.tsbuildinfo
+.env*

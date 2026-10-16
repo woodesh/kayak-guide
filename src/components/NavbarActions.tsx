@@ -75,20 +75,10 @@ export const NavbarActions = () => {
       </button>
       <ThemeToggle />
       <a
-        href={URLS.githubOrgUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={`${pillClassName} bg-container !text-primary hover:bg-container-2`}
-      >
-        GitHub
-      </a>
-      <a
         href={URLS.appUrl}
-        target="_blank"
-        rel="noopener noreferrer"
         className={`${pillClassName} bg-primary !text-background hover:opacity-85`}
       >
-        Go to App
+        下载客户端
       </a>
     </div>
   );

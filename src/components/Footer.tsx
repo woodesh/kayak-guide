@@ -1,84 +1,96 @@
 import Link from "next/link";
 
-import { InkMark } from "@/icons/InkMark";
-import { URLS } from "@/utils/urls";
+import { KayakLogo } from "@/icons/KayakLogo";
 
-const linkClassName =
-  "text-[13px] font-medium text-secondary underline decoration-outline underline-offset-4 transition-colors hover:text-primary";
-
-const docsLinks = [
-  { label: "About Ink", href: "/general/about" },
-  { label: "Network Information", href: "/general/network-information" },
-  { label: "Connect Wallet", href: "/general/connect-wallet" },
-  { label: "Bridges", href: "/tools/bridges" },
-  { label: "Faucets", href: "/tools/faucets" },
+const navColumns = [
+  {
+    title: "实务指引",
+    links: [
+      { label: "认识 Kayak 架构", href: "/start/01-what-is-kayak" },
+      { label: "安装与环境配置", href: "/start/02-installation-setup" },
+      {
+        label: "案卷数字化与证据链",
+        href: "/workflows/case-prep/01-case-file-organization",
+      },
+      {
+        label: "迟延履行利息计算",
+        href: "/workflows/execution-audit/08-interest-calculation",
+      },
+      { label: "实战案例库", href: "/recipes" },
+    ],
+  },
+  {
+    title: "参考手册",
+    links: [
+      {
+        label: "人工智能使用规范",
+        href: "/manual/03-supreme-court-ai-compliance",
+      },
+      {
+        label: "执行事务插件 (legal-agent)",
+        href: "/start/04-plugin-activation",
+      },
+      {
+        label: "工具与技能使用说明",
+        href: "/manual/02-mcp-tools-and-skills",
+      },
+      {
+        label: "法律工程 Prompt 速查",
+        href: "/manual/01-legal-prompt-cheatsheet",
+      },
+      { label: "常见问题与排错指南", href: "/manual/04-troubleshooting-faq" },
+      {
+        label: "知识产权与软件使用声明",
+        href: "/manual/05-intellectual-property",
+      },
+    ],
+  },
 ];
 
-const externalLinks = [
-  { label: "Terms", href: "https://inkonchain.com/en-US/terms" },
-  { label: "Privacy", href: "https://inkonchain.com/en-US/privacy" },
-  { label: "Status", href: URLS.statusPageUrl },
-  { label: "GitHub", href: URLS.githubOrgUrl },
-  { label: "App", href: URLS.appUrl },
-];
-
-// Mirrors the INK token website footer: two link columns, the coin rising
-// from the bottom edge, and the mark + copyright underneath (on mobile,
-// above the coin).
 export const Footer = () => {
   return (
-    <footer className="ink-footer relative mt-24 overflow-hidden md:mt-32">
-      <div className="mx-auto grid max-w-[var(--layout-width)] grid-cols-2 px-6 pb-8 md:pb-48 lg:px-10">
-        <div className="col-span-2 mb-10 border-t border-outline-subtle" />
-        <ul className="space-y-2.5">
-          {docsLinks.map(({ label, href }) => (
-            <li key={href}>
-              <Link className={linkClassName} href={href}>
-                {label}
-              </Link>
-            </li>
+    <footer className="relative mt-24 border-t border-outline-subtle bg-background pt-16 pb-12 md:mt-32">
+      <div className="mx-auto max-w-[var(--layout-width)] px-6 lg:px-10">
+        <div className="grid gap-10 md:grid-cols-4">
+          {/* Brand info */}
+          <div className="md:col-span-2 space-y-4">
+            <KayakLogo />
+            <p className="max-w-sm text-sm leading-relaxed text-secondary">
+              面向法律工作者的 Kayak
+              操作指南，涵盖材料整理、研究计算、企业资料查询和文书交付。
+            </p>
+          </div>
+
+          {/* Nav columns */}
+          {navColumns.map((col) => (
+            <div key={col.title} className="space-y-3">
+              <h4 className="text-sm font-semibold text-primary tracking-wide">
+                {col.title}
+              </h4>
+              <ul className="space-y-2.5 text-xs">
+                {col.links.map(({ label, href }) => (
+                  <li key={href}>
+                    <Link
+                      href={href}
+                      className="text-secondary transition-colors hover:text-primary !no-underline"
+                    >
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
-        </ul>
-        <ul className="space-y-2.5 text-right">
-          {externalLinks.map(({ label, href }) => (
-            <li key={href}>
-              <a
-                className={linkClassName}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
+        </div>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/ink-coin.png"
-          alt=""
-          width={761}
-          height={387}
-          loading="lazy"
-          decoding="async"
-          className="w-[560px] max-w-[85vw] translate-y-[15%] md:w-[680px]"
-        />
+        {/* Bottom copyright */}
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-outline-subtle pt-6 text-xs text-secondary sm:flex-row">
+          <span>© {new Date().getFullYear()} Kayak 开发者及相关权利人</span>
+          <span className="text-secondary/70">
+            使用前确认权限 采用前核对结果
+          </span>
+        </div>
       </div>
-
-      <div className="relative mx-auto flex max-w-[var(--layout-width)] items-end justify-between px-6 lg:px-10 pb-6">
-        <span className="inline-flex size-9 items-center justify-center rounded-full text-ink-light ring-1 ring-ink-light/50">
-          <InkMark className="size-5" />
-        </span>
-        <span className="text-xs text-secondary">
-          © Ink {new Date().getFullYear()}
-        </span>
-      </div>
-
-      {/* Mobile: the mark and © sit above the coin, which gets the bottom */}
-      <div className="h-44 md:hidden" aria-hidden="true" />
     </footer>
   );
 };
