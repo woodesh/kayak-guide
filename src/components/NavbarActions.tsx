@@ -75,10 +75,10 @@ export const NavbarActions = () => {
       </button>
       <ThemeToggle />
       <a
-        href={URLS.appUrl}
+        href={URLS.accountUrl}
         className={`${pillClassName} bg-primary !text-background hover:opacity-85`}
       >
-        下载客户端
+        开始使用
       </a>
     </div>
   );
