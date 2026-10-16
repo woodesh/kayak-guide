@@ -1191,6 +1191,36 @@ html.theme-fallback-transition *::after {
   }
 }
 
+/* Reserve a separate column for the home banner decoration when the card,
+   rather than just the viewport, has enough room for it. */
+.legal-agent-banner {
+  container-type: inline-size;
+}
+
+.legal-agent-banner__layout {
+  display: grid;
+  gap: 2rem;
+}
+
+.legal-agent-banner__art {
+  position: relative;
+  display: none;
+  min-width: 0;
+  pointer-events: none;
+  opacity: 0.28;
+  mask-image: linear-gradient(to right, transparent, black 35%);
+}
+
+@container (min-width: 44rem) {
+  .legal-agent-banner__layout {
+    grid-template-columns: minmax(0, 1fr) minmax(10rem, 0.4fr);
+  }
+
+  .legal-agent-banner__art {
+    display: block;
+  }
+}
+
 /* Typed text in Departure Mono (components/Typewriter) */
 .ink-typer {
   font-family:

@@ -297,42 +297,44 @@ export const LegalAgentBanner = () => {
   }, []);
 
   return (
-    <div className={clsx(card, "relative mt-12 overflow-hidden px-8 py-9")}>
-      {/* Interactive ASCII background, fading out to the left */}
-      <div
-        className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 sm:block"
-        style={{
-          maskImage: "linear-gradient(to right, transparent, black 45%)",
-        }}
-      >
-        <interactive-ascii
-          style={{ position: "absolute", inset: 0 }}
-          value="3"
-          speed="0.9"
-          interaction="0.9"
-          phase="12"
-        />
-      </div>
-      <div className="relative max-w-xl">
-        <div className="text-2xl font-semibold !text-primary sm:text-3xl">
-          <Typewriter text="Kayak 法律助手实战指南" />
+    <div
+      className={clsx(
+        card,
+        "legal-agent-banner relative mt-12 overflow-hidden px-8 py-9"
+      )}
+    >
+      <div className="legal-agent-banner__layout">
+        <div className="relative min-w-0 max-w-xl">
+          <div className="text-2xl font-semibold !text-primary sm:text-3xl">
+            <Typewriter text="Kayak 法律助手实战指南" />
+          </div>
+          <div className="mt-3 text-sm font-medium leading-relaxed !text-primary/70">
+            把材料整理、研究、计算和文书制作放进同一项任务。开始前确认权限与数据处理范围，采用结果前核对原文、金额和实际文件。
+          </div>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <SmartLink
+              href="/start/01-what-is-kayak"
+              className="inline-flex items-center rounded-full bg-primary px-5 py-2.5 text-sm font-semibold !text-background transition-opacity hover:opacity-85"
+            >
+              了解功能与使用条件
+            </SmartLink>
+            <SmartLink
+              href="/manual/03-supreme-court-ai-compliance"
+              className="inline-flex items-center rounded-full bg-container px-5 py-2.5 text-sm font-semibold !text-primary transition-colors hover:bg-container-2"
+            >
+              人工智能使用规范
+            </SmartLink>
+          </div>
         </div>
-        <div className="mt-3 text-sm leading-relaxed font-medium !text-secondary">
-          把材料整理、研究、计算和文书制作放进同一项任务。开始前确认权限与数据处理范围，采用结果前核对原文、金额和实际文件。
-        </div>
-        <div className="mt-6 flex flex-wrap gap-3">
-          <SmartLink
-            href="/start/01-what-is-kayak"
-            className="inline-flex items-center rounded-full bg-primary px-5 py-2.5 text-sm font-semibold !text-background transition-opacity hover:opacity-85"
-          >
-            了解功能与使用条件
-          </SmartLink>
-          <SmartLink
-            href="/manual/03-supreme-court-ai-compliance"
-            className="inline-flex items-center rounded-full bg-container px-5 py-2.5 text-sm font-semibold !text-primary transition-colors hover:bg-container-2"
-          >
-            人工智能使用规范
-          </SmartLink>
+        {/* Keep decorative glyphs outside the text column at every animation frame. */}
+        <div className="legal-agent-banner__art" aria-hidden="true">
+          <interactive-ascii
+            style={{ position: "absolute", inset: 0 }}
+            value="3"
+            speed="0.9"
+            interaction="0.9"
+            phase="12"
+          />
         </div>
       </div>
     </div>
