@@ -1,5 +1,12 @@
-import { isValidElement, type ReactNode, useEffect, useState } from "react";
-import clsx from "clsx";
+import {
+  isValidElement,
+  type ReactNode,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import type { Heading } from "nextra";
 
@@ -23,11 +30,45 @@ const toText = (node: ReactNode): string => {
 // (navbar height + a little breathing room).
 const ACTIVE_OFFSET = 120;
 
-// Plain list like aave.com/docs: no title or rules, the current section is
-// highlighted as you scroll, and the whole list fades in once the page is
-// scrolled (html[data-scrolled], see ScrollState + globals.css).
-export const Toc: React.FC<TocProps> = ({ toc: headings }) => {
+export const Toc: React.FC<TocProps> = ({ toc: headings, filePath }) => {
   const [activeId, setActiveId] = useState<string>();
+  const [open, setOpen] = useState(false);
+  const [slot, setSlot] = useState<HTMLElement | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const panelId = useId();
+
+  useEffect(() => {
+    // Nextra renders the TOC in a separate column, hidden on small screens.
+    // Mount in the title row so removing that column also works on phones.
+    setSlot(document.getElementById("ink-toc-slot"));
+    setOpen(false);
+  }, [filePath]);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const closeOutside = (event: PointerEvent) => {
+      if (!containerRef.current?.contains(event.target as Node)) setOpen(false);
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setOpen(false);
+      triggerRef.current?.focus({ preventScroll: true });
+    };
+    const closeOnFocusLeave = (event: FocusEvent) => {
+      if (!containerRef.current?.contains(event.target as Node)) setOpen(false);
+    };
+
+    document.addEventListener("pointerdown", closeOutside);
+    document.addEventListener("keydown", closeOnEscape);
+    document.addEventListener("focusin", closeOnFocusLeave);
+    return () => {
+      document.removeEventListener("pointerdown", closeOutside);
+      document.removeEventListener("keydown", closeOnEscape);
+      document.removeEventListener("focusin", closeOnFocusLeave);
+    };
+  }, [open]);
 
   useEffect(() => {
     if (headings.length === 0) return;
@@ -48,30 +89,72 @@ export const Toc: React.FC<TocProps> = ({ toc: headings }) => {
     return () => window.removeEventListener("scroll", update);
   }, [headings]);
 
-  if (headings.length === 0) return null;
+  if (headings.length === 0 || !slot) return null;
 
   const minDepth = Math.min(...headings.map(({ depth }) => depth));
 
-  return (
-    <nav
-      aria-label="On this page"
-      className="ink-toc sticky top-[var(--nextra-navbar-height)] pt-16 pb-5"
-    >
-      <ul className="flex flex-col gap-2.5">
-        {headings.map(({ id, value, depth }) => (
-          <li key={id} style={{ paddingLeft: `${(depth - minDepth) * 12}px` }}>
-            <Link
-              href={`#${id}`}
-              className={clsx(
-                "toc-link block text-sm font-medium leading-5 transition-colors",
-                id === activeId && "!text-primary"
-              )}
+  return createPortal(
+    <div ref={containerRef} className="ink-toc-control">
+      <button
+        ref={triggerRef}
+        type="button"
+        className="ink-toc-trigger"
+        aria-expanded={open}
+        aria-controls={panelId}
+        onClick={() => setOpen(!open)}
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          aria-hidden="true"
+        >
+          <path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01" />
+        </svg>
+        <span>本页目录</span>
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path d={open ? "m6 15 6-6 6 6" : "m6 9 6 6 6-6"} />
+        </svg>
+      </button>
+      <nav
+        id={panelId}
+        aria-label="本页目录"
+        className="ink-toc-panel"
+        hidden={!open}
+      >
+        <ul>
+          {headings.map(({ id, value, depth }) => (
+            <li
+              key={id}
+              style={{ paddingLeft: `${(depth - minDepth) * 12}px` }}
             >
-              {toText(value)}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </nav>
+              <Link
+                href={`#${id}`}
+                className="toc-link"
+                aria-current={id === activeId ? "location" : undefined}
+                onClick={() => setOpen(false)}
+              >
+                {toText(value)}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>,
+    slot
   );
 };

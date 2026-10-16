@@ -684,7 +684,7 @@ html:has(.nextra-nav-container input[type="search"]:focus)
 
 /* Page title, ruled underneath */
 .nextra-content main .ink-page-title {
-  @apply flex flex-col-reverse items-start gap-4 border-b border-outline-subtle pb-5 sm:flex-row sm:justify-between;
+  @apply flex items-start justify-between gap-4 border-b border-outline-subtle pb-5;
 }
 
 /* Long titles wrap within the content column */
@@ -917,34 +917,102 @@ html:has(.nextra-nav-container input[type="search"]:focus)
   @apply !rounded-lg !border-0 !bg-transparent !text-secondary hover:!bg-container hover:!text-primary dark:hover:!bg-container-2;
 }
 
-/*
- * TOC — on wide screens it sits outside the layout, in the right gutter (like
- * aave.com/docs), so the content column spans the full layout width; it
- * fades in once the page is scrolled. Narrower screens have no gutter to
- * spare, so there it stays in the layout and is always visible.
- */
-@media (min-width: 1600px) {
-  ._max-w-\[90rem\]:has(> .nextra-toc) {
-    @apply relative;
+/* The TOC lives in the title row; remove Nextra's reserved right column. */
+.nextra-toc {
+  display: none !important;
+}
+
+._max-w-\[90rem\]:has(> .nextra-toc) > .nextra-content main {
+  max-width: 56rem;
+}
+
+.ink-toc-slot {
+  @apply shrink-0 pt-0.5;
+}
+
+.ink-toc-slot:empty {
+  display: none;
+}
+
+.ink-toc-control {
+  @apply relative;
+}
+
+.ink-toc-trigger {
+  @apply flex min-h-11 items-center gap-2 rounded-lg px-3 text-[13px] font-medium leading-5 text-primary/70 transition-colors hover:bg-container hover:text-primary;
+}
+
+.ink-toc-trigger[aria-expanded="true"] {
+  @apply bg-container text-primary;
+}
+
+.ink-toc-trigger:focus-visible,
+.ink-toc-panel .toc-link:focus-visible {
+  @apply outline outline-2 outline-offset-2 outline-ink;
+}
+
+.ink-toc-panel {
+  @apply absolute right-0 z-30 mt-2 overflow-y-auto rounded-xl border border-outline-subtle bg-background p-2;
+  width: min(20rem, calc(100vw - 3rem));
+  max-height: min(28rem, 60dvh);
+}
+
+.nextra-content main .ink-toc-panel ul {
+  margin: 0 !important;
+  padding: 0;
+  list-style: none;
+}
+
+.nextra-content main .ink-toc-panel li {
+  margin: 0 !important;
+}
+
+.ink-toc-panel .toc-link {
+  @apply block min-h-11 rounded-md px-3 py-2.5 text-[13px] font-medium leading-5 !text-primary/70 transition-colors hover:bg-container hover:!text-primary;
+}
+
+.ink-toc-panel .toc-link[aria-current="location"] {
+  @apply !text-ink dark:!text-ink-light;
+}
+
+.nextra-content main :is(h2, h3, h4, h5, h6)[id] {
+  scroll-margin-top: calc(var(--nextra-navbar-height) + 3.5rem);
+}
+
+@media (max-width: 639px) {
+  .ink-toc-trigger {
+    @apply gap-1.5 px-2;
   }
 
-  .nextra-toc {
-    @apply absolute inset-y-0 left-full pl-8;
-    /* Never wider than the gutter it sits in */
-    width: min(
-      16rem,
-      calc((100vw - var(--layout-width)) / 2 - 1.5rem)
-    ) !important;
+  .ink-toc-trigger > svg:last-child {
+    display: none;
   }
+}
 
-  .ink-toc {
-    @apply transition-opacity duration-300;
+@media print {
+  .ink-toc-slot {
+    display: none;
   }
+}
 
-  body:not([data-scrolled]) .ink-toc,
-  :not([data-scrolled]) .ink-toc {
-    @apply pointer-events-none opacity-0;
-  }
+/* Full document pages stay readable without stretching across the article. */
+.ink-document-example {
+  margin: 2rem 0;
+}
+
+.ink-document-example[data-document-page] {
+  max-width: 34rem;
+  margin-inline: auto;
+}
+
+.ink-document-example img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.ink-document-example figcaption {
+  @apply mt-3 text-center text-sm leading-6 text-primary/70;
 }
 
 /*

@@ -9,14 +9,23 @@ export function Mermaid({ chart }: MermaidProps) {
   const cleanId = id.replace(/[^a-zA-Z0-9]/g, "");
   const containerRef = useRef<HTMLDivElement>(null);
   const [renderedSvg, setRenderedSvg] = useState<string>("");
+  const [renderError, setRenderError] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
+    let renderVersion = 0;
+    setHasMounted(true);
+    setRenderedSvg("");
 
     async function renderChart() {
       if (!containerRef.current) return;
+      const version = ++renderVersion;
+      let tempContainer: HTMLDivElement | undefined;
+      setRenderError(false);
       try {
         const { default: mermaid } = await import("mermaid");
+        if (!isMounted || version !== renderVersion) return;
         const htmlElement = document.documentElement;
         const isDarkTheme =
           htmlElement.classList.contains("dark") ||
@@ -30,7 +39,9 @@ export function Mermaid({ chart }: MermaidProps) {
           theme: isDarkTheme ? "dark" : "base",
           themeVariables: {
             clusterBkg: "transparent",
-            clusterBorder: isDarkTheme ? "rgba(255, 255, 255, 0.12)" : "#e2e8f0",
+            clusterBorder: isDarkTheme
+              ? "rgba(255, 255, 255, 0.12)"
+              : "#e2e8f0",
             primaryColor: isDarkTheme ? "#0c0f17" : "#ffffff",
             primaryTextColor: isDarkTheme ? "#f8fafc" : "#0f172a",
             primaryBorderColor: isDarkTheme ? "#334155" : "#cbd5e1",
@@ -49,7 +60,7 @@ export function Mermaid({ chart }: MermaidProps) {
         });
 
         // Use an off-screen container that has layout metrics (NOT display: none)
-        const tempContainer = document.createElement("div");
+        tempContainer = document.createElement("div");
         tempContainer.className = "nextra-content";
         tempContainer.style.position = "fixed";
         tempContainer.style.top = "-99999px";
@@ -58,22 +69,21 @@ export function Mermaid({ chart }: MermaidProps) {
         tempContainer.style.visibility = "hidden";
         document.body.appendChild(tempContainer);
 
-        const renderId = `m-${cleanId}-${Date.now()}`;
+        const renderId = `m-${cleanId}-${Date.now()}-${version}`;
         const { svg } = await mermaid.render(
           renderId,
           chart.replaceAll("\\n", "\n"),
           tempContainer
         );
 
-        if (document.body.contains(tempContainer)) {
-          document.body.removeChild(tempContainer);
-        }
-
-        if (isMounted) {
+        if (isMounted && version === renderVersion) {
           setRenderedSvg(svg);
         }
       } catch (error) {
         console.error("Error while rendering mermaid", error);
+        if (isMounted && version === renderVersion) setRenderError(true);
+      } finally {
+        tempContainer?.remove();
       }
     }
 
@@ -99,6 +109,21 @@ export function Mermaid({ chart }: MermaidProps) {
       observer.disconnect();
     };
   }, [chart, cleanId]);
+
+  // Keep the server and initial client markup identical before showing status.
+  if (!hasMounted) return <div ref={containerRef} />;
+
+  if (!renderedSvg) {
+    return (
+      <div ref={containerRef} aria-busy={!renderError}>
+        <p role="status" className="py-6 text-sm text-primary/70">
+          {renderError
+            ? "流程图暂时无法显示，请刷新页面重试。"
+            : "正在加载流程图…"}
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div
